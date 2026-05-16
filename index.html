@@ -454,20 +454,32 @@ const convidados = [
 "Rose Klippel"
   
 ];
-
 <script type="module">
 
-import Firebase...
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-const firebaseConfig = {...};
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "COLE_SUA_API_KEY_AQUI",
+  authDomain: "casamento-luana-e-fabio.firebaseapp.com",
+  projectId: "casamento-luana-e-fabio",
+  storageBucket: "casamento-luana-e-fabio.firebasestorage.app",
+  messagingSenderId: "166534956996",
+  appId: "COLE_SEU_APP_ID_AQUI"
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const convidados = [
-  "Luana noiva",
-  "Fabio noivo",
-  ...
+  // SUA LISTA COMPLETA FICA AQUI
 ];
 
 function normalizar(texto){
@@ -476,13 +488,51 @@ function normalizar(texto){
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g,"")
     .replace(/\*/g,"")
+    .replace(/\s+/g," ")
     .trim();
 }
 
 window.verificarConvite = async function(){
-  // verifica nome sem acento
-  // confirma
-  // salva no Firebase
+
+  const nomeOriginal = document.getElementById("nome").value.trim();
+  const nomeDigitado = normalizar(nomeOriginal);
+  const resultado = document.getElementById("resultado");
+
+  if(!nomeDigitado){
+    resultado.style.color = "#b00020";
+    resultado.innerHTML = "❌ Digite seu nome completo.";
+    return;
+  }
+
+  const convidadoEncontrado = convidados.find(nome => normalizar(nome) === nomeDigitado);
+
+  if(!convidadoEncontrado){
+    resultado.style.color = "#b00020";
+    resultado.innerHTML = "❌ Seu nome não foi localizado na lista de convidados.";
+    return;
+  }
+
+  const idConfirmacao = normalizar(convidadoEncontrado).replace(/\s+/g, "-");
+
+  const referencia = doc(db, "confirmacoes", idConfirmacao);
+
+  const jaExiste = await getDoc(referencia);
+
+  if(jaExiste.exists()){
+    resultado.style.color = "#2f6b3b";
+    resultado.innerHTML = "✅ Sua presença já estava confirmada. Esperamos você com carinho!";
+    return;
+  }
+
+  await setDoc(referencia, {
+    nome: convidadoEncontrado,
+    nomeDigitado: nomeOriginal,
+    status: "confirmado",
+    dataHora: serverTimestamp()
+  });
+
+  resultado.style.color = "#2f6b3b";
+  resultado.innerHTML = "✅ Presença confirmada com sucesso! Será um prazer ter você conosco.";
 }
 
 </script>
