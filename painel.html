@@ -307,7 +307,8 @@
       });
 
       document.getElementById("totalCount").textContent = convidados.length;
-      document.getElementById("confirmedCount").textContent = convidados.filter(c => c.confirmado || c.confirmed).length;
+      document.getElementById("confirmedCount").textContent =
+ convidados.filter(c => c.status === "confirmado").length;
       document.getElementById("presentCount").textContent = convidados.filter(c => c.presente || c.present).length;
 
       if (filtrados.length === 0) {
@@ -319,7 +320,7 @@
         .sort((a, b) => (a.nome || a.name || "").localeCompare(b.nome || b.name || ""))
         .map((convidado) => {
           const nome = convidado.nome || convidado.name || "Convidado sem nome";
-          const confirmado = Boolean(convidado.confirmado || convidado.confirmed);
+          const confirmado = convidado.status === "confirmado";
           const presente = Boolean(convidado.presente || convidado.present);
           const horario = formatarHorario(convidado.horarioPresenca || convidado.presentAt);
 
