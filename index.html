@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,154 +16,198 @@ box-sizing:border-box;
 
 body{
 font-family: 'Georgia', serif;
-background:
-linear-gradient(rgba(255,255,255,0.94), rgba(255,255,255,0.94)),
-url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200');
-background-size:cover;
-background-position:center;
-min-height:100vh;
+background:#f8f5ef;
+overflow:hidden;
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-padding:30px;
-}
-
-.container{
-background:#ffffff;
-width:100%;
-max-width:550px;
-padding:50px 35px;
-border-radius:25px;
-box-shadow:0 10px 35px rgba(0,0,0,0.12);
-border:2px solid #d4af37;
 position:relative;
-overflow:hidden;
 }
 
-.container::before{
-content:"";
+/* FUNDO */
+
+body::before{
+content:'';
+position:absolute;
+width:100%;
+height:100%;
+background:
+linear-gradient(rgba(255,255,255,0.90), rgba(255,255,255,0.92)),
+url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200');
+background-size:cover;
+background-position:center;
+z-index:-3;
+}
+
+/* FOLHAGEM SUPERIOR */
+
+.top-folhas{
 position:absolute;
 top:0;
 left:0;
 width:100%;
-height:12px;
-background:linear-gradient(to right,#2f5d3f,#d4af37,#2f5d3f);
+height:220px;
+background:url('https://i.imgur.com/L0x7XK5.png');
+background-size:cover;
+background-position:top center;
+animation:balanco 6s ease-in-out infinite alternate;
+z-index:-1;
 }
 
-h1{
+/* FOLHAGEM INFERIOR */
+
+.bottom-folhas{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:220px;
+background:url('https://i.imgur.com/u6rlG8x.png');
+background-size:cover;
+background-position:bottom center;
+animation:balanco 7s ease-in-out infinite alternate;
+z-index:-1;
+}
+
+/* ANIMAÇÃO SUAVE */
+
+@keyframes balanco{
+0%{
+transform:translateY(0px) rotate(0deg);
+}
+100%{
+transform:translateY(5px) rotate(1deg);
+}
+}
+
+/* FOLHAS CAINDO */
+
+.folha{
+position:absolute;
+top:-50px;
+font-size:30px;
+animation:cair linear infinite;
+opacity:0.7;
+}
+
+@keyframes cair{
+0%{
+transform:translateY(-100px) rotate(0deg);
+opacity:0;
+}
+10%{
+opacity:1;
+}
+100%{
+transform:translateY(120vh) rotate(360deg);
+opacity:0;
+}
+}
+
+/* CARD */
+
+.container{
+background:rgba(255,255,255,0.88);
+width:90%;
+max-width:500px;
+padding:50px 35px;
+border-radius:30px;
 text-align:center;
-font-size:42px;
-color:#b08d2f;
+box-shadow:0 15px 40px rgba(0,0,0,0.15);
+backdrop-filter:blur(10px);
+border:2px solid rgba(179,137,74,0.4);
+position:relative;
+z-index:5;
+}
+
+/* TITULOS */
+
+h1{
+font-size:62px;
+color:#b3894a;
 margin-bottom:10px;
 font-weight:normal;
 }
 
 h2{
-text-align:center;
-font-size:30px;
-color:#2f5d3f;
-margin-bottom:25px;
+font-size:42px;
+color:#204d2f;
+margin-bottom:30px;
 font-weight:normal;
 }
 
 p{
-text-align:center;
-font-size:18px;
-line-height:1.7;
-color:#555;
-margin-bottom:25px;
+font-size:22px;
+color:#333;
+margin-bottom:35px;
+line-height:1.5;
 }
 
-.folha{
-font-size:34px;
-text-align:center;
-margin-bottom:10px;
-}
+/* INPUT */
 
 input{
 width:100%;
-padding:16px;
-border-radius:12px;
-border:1px solid #ccc;
-font-size:16px;
+padding:20px;
+border-radius:18px;
+border:2px solid #d7d7d7;
+font-size:20px;
 outline:none;
-margin-top:10px;
+margin-bottom:25px;
 transition:0.3s;
 }
 
 input:focus{
-border-color:#2f5d3f;
-box-shadow:0 0 8px rgba(47,93,63,0.2);
+border-color:#2f6b3b;
+box-shadow:0 0 10px rgba(47,107,59,0.3);
 }
+
+/* BOTÃO */
 
 button{
 width:100%;
-margin-top:20px;
-padding:16px;
+padding:20px;
 border:none;
-border-radius:12px;
-background:#2f5d3f;
+border-radius:18px;
+background:linear-gradient(90deg,#1f5d2f,#3f8d4f);
 color:white;
-font-size:17px;
+font-size:24px;
+font-weight:bold;
 cursor:pointer;
 transition:0.3s;
-font-weight:bold;
-letter-spacing:0.5px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 
 button:hover{
-background:#244730;
+transform:scale(1.02);
 }
 
-.resultado{
+/* RESULTADO */
+
+#resultado{
 margin-top:30px;
-padding:20px;
-border-radius:15px;
-font-size:18px;
-line-height:1.6;
-text-align:center;
-display:none;
-}
-
-.ok{
-background:#edf7ef;
-color:#2f5d3f;
-border:1px solid #b7d8be;
-display:block;
-}
-
-.erro{
-background:#fff0f0;
-color:#b00020;
-border:1px solid #f0b5be;
-display:block;
-}
-
-.confirmado{
-margin-top:15px;
-font-size:20px;
+font-size:22px;
 font-weight:bold;
 }
 
-footer{
-margin-top:35px;
-text-align:center;
-font-size:14px;
-color:#999;
-}
+/* RESPONSIVO */
 
 @media(max-width:600px){
 
-.container{
-padding:40px 25px;
-}
-
 h1{
-font-size:34px;
+font-size:45px;
 }
 
 h2{
-font-size:24px;
+font-size:30px;
+}
+
+p{
+font-size:18px;
+}
+
+.container{
+padding:40px 25px;
 }
 
 }
@@ -174,27 +217,47 @@ font-size:24px;
 
 <body>
 
-<div class="container">
+<div class="top-folhas"></div>
+<div class="bottom-folhas"></div>
 
-<div class="folha">🌿</div>
+<!-- FOLHAS CAINDO -->
+
+<div class="folha" style="left:10%; animation-duration:12s;">🍃</div>
+<div class="folha" style="left:30%; animation-duration:15s;">🍃</div>
+<div class="folha" style="left:50%; animation-duration:10s;">🍃</div>
+<div class="folha" style="left:70%; animation-duration:14s;">🍃</div>
+<div class="folha" style="left:90%; animation-duration:11s;">🍃</div>
+
+<!-- CARD -->
+
+<div class="container">
 
 <h1>Confirmação</h1>
 
 <h2>Luana & Fábio</h2>
 
 <p>
-Será uma alegria ter você conosco nesse dia tão especial.
+Será uma alegria ter você conosco nesse dia tão especial!
 </p>
 
 <input
 type="text"
 id="nome"
 placeholder="Digite seu nome completo"
->
+/>
 
-<button onclick="verificarNome()">
+<button onclick="verificarConvite()">
 Verificar Convite
 </button>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+/* LISTA DE CONVIDADOS */
+
 const convidados = [
 
 const convidados = [
@@ -397,7 +460,54 @@ const convidados = [
 "Leandra Nunes",
 "Edelita",
 "Rose Klippel"
-
+  
 ];
 
-];
+/* REMOVER ACENTOS */
+
+function normalizar(texto){
+
+return texto
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/\*/g,"")
+.trim();
+
+}
+
+/* VERIFICAR */
+
+function verificarConvite(){
+
+const nomeDigitado =
+normalizar(document.getElementById("nome").value);
+
+const convidadosNormalizados =
+convidados.map(nome => normalizar(nome));
+
+const resultado =
+document.getElementById("resultado");
+
+if(convidadosNormalizados.includes(nomeDigitado)){
+
+resultado.style.color = "#2f6b3b";
+
+resultado.innerHTML =
+"✅ Convite encontrado! Será um prazer ter você conosco.";
+
+}else{
+
+resultado.style.color = "#b00020";
+
+resultado.innerHTML =
+"❌ Seu nome não foi localizado na lista de convidados.";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
