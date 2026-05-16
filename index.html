@@ -1,19 +1,197 @@
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDY3OJ_rgq0duVD0lOIs0wiIt5JAB0_Keg",
-    authDomain: "casamento-luana-e-fabio.firebaseapp.com",
-    projectId: "casamento-luana-e-fabio",
-    storageBucket: "casamento-luana-e-fabio.firebasestorage.app",
-    messagingSenderId: "166534956996",
-    appId: "1:166534956996:web:bdb486e0e1a9cb5a544691"
-  };
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+<title>Confirmação de Presença</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family: 'Georgia', serif;
+background:
+linear-gradient(rgba(255,255,255,0.94), rgba(255,255,255,0.94)),
+url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200');
+background-size:cover;
+background-position:center;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px;
+}
+
+.container{
+background:#ffffff;
+width:100%;
+max-width:550px;
+padding:50px 35px;
+border-radius:25px;
+box-shadow:0 10px 35px rgba(0,0,0,0.12);
+border:2px solid #d4af37;
+position:relative;
+overflow:hidden;
+}
+
+.container::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:12px;
+background:linear-gradient(to right,#2f5d3f,#d4af37,#2f5d3f);
+}
+
+h1{
+text-align:center;
+font-size:42px;
+color:#b08d2f;
+margin-bottom:10px;
+font-weight:normal;
+}
+
+h2{
+text-align:center;
+font-size:30px;
+color:#2f5d3f;
+margin-bottom:25px;
+font-weight:normal;
+}
+
+p{
+text-align:center;
+font-size:18px;
+line-height:1.7;
+color:#555;
+margin-bottom:25px;
+}
+
+.folha{
+font-size:34px;
+text-align:center;
+margin-bottom:10px;
+}
+
+input{
+width:100%;
+padding:16px;
+border-radius:12px;
+border:1px solid #ccc;
+font-size:16px;
+outline:none;
+margin-top:10px;
+transition:0.3s;
+}
+
+input:focus{
+border-color:#2f5d3f;
+box-shadow:0 0 8px rgba(47,93,63,0.2);
+}
+
+button{
+width:100%;
+margin-top:20px;
+padding:16px;
+border:none;
+border-radius:12px;
+background:#2f5d3f;
+color:white;
+font-size:17px;
+cursor:pointer;
+transition:0.3s;
+font-weight:bold;
+letter-spacing:0.5px;
+}
+
+button:hover{
+background:#244730;
+}
+
+.resultado{
+margin-top:30px;
+padding:20px;
+border-radius:15px;
+font-size:18px;
+line-height:1.6;
+text-align:center;
+display:none;
+}
+
+.ok{
+background:#edf7ef;
+color:#2f5d3f;
+border:1px solid #b7d8be;
+display:block;
+}
+
+.erro{
+background:#fff0f0;
+color:#b00020;
+border:1px solid #f0b5be;
+display:block;
+}
+
+.confirmado{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+
+footer{
+margin-top:35px;
+text-align:center;
+font-size:14px;
+color:#999;
+}
+
+@media(max-width:600px){
+
+.container{
+padding:40px 25px;
+}
+
+h1{
+font-size:34px;
+}
+
+h2{
+font-size:24px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="folha">🌿</div>
+
+<h1>Confirmação</h1>
+
+<h2>Luana & Fábio</h2>
+
+<p>
+Será uma alegria ter você conosco nesse dia tão especial.
+</p>
+
+<input
+type="text"
+id="nome"
+placeholder="Digite seu nome completo"
+>
+
+<button onclick="verificarNome()">
+Verificar Convite
+</button>
