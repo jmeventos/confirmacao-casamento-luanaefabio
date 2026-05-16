@@ -455,37 +455,36 @@ const convidados = [
   
 ];
 
-/* REMOVER ACENTOS */
+<script type="module">
+
+import Firebase...
+
+const firebaseConfig = {...};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const convidados = [
+  "Luana noiva",
+  "Fabio noivo",
+  ...
+];
 
 function normalizar(texto){
-
-return texto
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"")
-.replace(/\*/g,"")
-.trim();
-
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/\*/g,"")
+    .trim();
 }
 
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+window.verificarConvite = async function(){
+  // verifica nome sem acento
+  // confirma
+  // salva no Firebase
+}
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDY3OJ_rgq0duVD0lOIs0wiIt5JAB0_Keg",
-    authDomain: "casamento-luana-e-fabio.firebaseapp.com",
-    projectId: "casamento-luana-e-fabio",
-    storageBucket: "casamento-luana-e-fabio.firebasestorage.app",
-    messagingSenderId: "166534956996",
-    appId: "1:166534956996:web:bdb486e0e1a9cb5a544691"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
 </script>
 
 </body>
