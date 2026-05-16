@@ -7,21 +7,7 @@
 <title>Confirmação de Presença</title>
 
 <style>
-  
-.folhagem-topo{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:260px;
-    background-image:url('folhagem.webp');
-    background-size:cover;
-    background-position:center top;
-    background-repeat:no-repeat;
-    z-index:0;
 
-    animation: vento 6s ease-in-out infinite;
-}
 
 @keyframes vento{
     0%{
@@ -77,42 +63,19 @@ left:0;
 width:100%;
 height:100%;
 background:
-linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)),
+linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)),
 url('folhagem.webp');
 background-size:cover;
-background-position:center;
+background-position:center center;
 background-repeat:no-repeat;
-z-index:-3;
+z-index:-1;
+animation:ventoFundo 8s ease-in-out infinite;
 }
 
-/* FOLHAGEM SUPERIOR */
-
-.top-folhas{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:220px;
-background:url('https://i.imgur.com/L0x7XK5.png');
-background-size:cover;
-background-position:top center;
-animation:balanco 6s ease-in-out infinite alternate;
-z-index:-1;
-}
-
-/* FOLHAGEM INFERIOR */
-
-.bottom-folhas{
-position:absolute;
-bottom:0;
-left:0;
-width:100%;
-height:220px;
-background:url('https://i.imgur.com/u6rlG8x.png');
-background-size:cover;
-background-position:bottom center;
-animation:balanco 7s ease-in-out infinite alternate;
-z-index:-1;
+@keyframes ventoFundo{
+0%{ transform:scale(1) translateY(0); }
+50%{ transform:scale(1.03) translateY(-6px); }
+100%{ transform:scale(1) translateY(0); }
 }
 
 /* ANIMAÇÃO SUAVE */
@@ -262,16 +225,6 @@ padding:40px 25px;
 
 <body>
   
-<div class="folhagem-topo"></div>
-
-<!-- FOLHAS CAINDO -->
-
-<div class="folha" style="left:10%; animation-duration:12s;">🍃</div>
-<div class="folha" style="left:30%; animation-duration:15s;">🍃</div>
-<div class="folha" style="left:50%; animation-duration:10s;">🍃</div>
-<div class="folha" style="left:70%; animation-duration:14s;">🍃</div>
-<div class="folha" style="left:90%; animation-duration:11s;">🍃</div>
-
 <!-- CARD -->
 
 <div class="container">
