@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Presença | Luana & Fábio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(255,255,255,0.84), rgba(255,255,255,0.84)),
+        url("https://SEU-LINK-DO-FUNDO-AQUI.jpg") center/cover no-repeat fixed;
+      color: #2f2927;
+      padding: 22px 14px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+      padding: 24px 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.65);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: #2f2927;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.05;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #6d625d;
+      margin-top: 4px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e6ddd8;
+      border-radius: 17px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px;
+      color: #2f2927;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+      padding-bottom: 3px;
+    }
+
+    .tab {
+      border: none;
+      border-radius: 14px;
+      padding: 10px 17px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #2f2927;
+      background: rgba(238,231,226,0.9);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: #2f2927;
+      color: #fff;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.82);
+      border-radius: 16px;
+      padding: 12px 8px;
+      text-align: center;
+      border: 1px solid rgba(230,221,216,0.8);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 20px;
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: #6d625d;
+    }
+
+    .guest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .guest-card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 20px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid rgba(230,221,216,0.8);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .guest-name {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .guest-status {
+      font-size: 14px;
+      color: #4f8f55;
+      font-weight: 600;
+    }
+
+    .guest-time {
+      font-size: 12px;
+      color: #7a706b;
+      margin-top: 3px;
+    }
+
+    .present-btn {
+      border: none;
+      border-radius: 10px;
+      background: #4f9b57;
+      color: #fff;
+      padding: 10px 14px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(79,155,87,0.25);
+    }
+
+    .present-btn.off {
+      background: #c7beb8;
+      box-shadow: none;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 26px 10px;
+      color: #6d625d;
+      font-size: 15px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: #7a706b;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="header">
+      <div class="icon">👥</div>
+      <div>
+        <h1>Painel de Presença</h1>
+        <p class="subtitle">Controle de entrada</p>
+      </div>
+    </section>
+
+    <div class="search-box">
+      <span>🔍</span>
+      <input id="searchInput" type="text" placeholder="Buscar convidado..." />
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-filter="todos">Todos</button>
+      <button class="tab" data-filter="confirmados">Confirmados</button>
+      <button class="tab" data-filter="presentes">Presentes</button>
+      <button class="tab" data-filter="pendentes">Pendentes</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
+      <div class="stat"><strong id="confirmedCount">0</strong><span>Confirmados</span></div>
+      <div class="stat"><strong id="presentCount">0</strong><span>Presentes</span></div>
+    </div>
+
+    <section id="guestList" class="guest-list"></section>
+
+    <p class="footer-note">Luana & Fábio • RSVP digital</p>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      onSnapshot,
+      doc,
+      updateDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // COLE AQUI A MESMA CONFIGURAÇÃO FIREBASE DA SUA PÁGINA RSVP
+    const firebaseConfig = {
+      apiKey: "SEU_API_KEY",
+      authDomain: "SEU_AUTH_DOMAIN",
+      projectId: "SEU_PROJECT_ID",
+      storageBucket: "SEU_STORAGE_BUCKET",
+      messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+      appId: "SEU_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ALTERE AQUI SOMENTE SE SUA COLEÇÃO TIVER OUTRO NOME
+    const convidadosRef = collection(db, "convidados");
+
+    let convidados = [];
+    let filtroAtual = "todos";
+
+    const guestList = document.getElementById("guestList");
+    const searchInput = document.getElementById("searchInput");
+    const tabs = document.querySelectorAll(".tab");
+
+    onSnapshot(convidadosRef, (snapshot) => {
+      convidados = snapshot.docs.map((documento) => ({
+        id: documento.id,
+        ...documento.data()
+      }));
+      render();
+    });
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        filtroAtual = tab.dataset.filter;
+        render();
+      });
+    });
+
+    searchInput.addEventListener("input", render);
+
+    function render() {
+      const termo = searchInput.value.toLowerCase().trim();
+
+      const filtrados = convidados.filter((convidado) => {
+        const nome = (convidado.nome || convidado.name || "").toLowerCase();
+        const confirmado = Boolean(convidado.confirmado || convidado.confirmed);
+        const presente = Boolean(convidado.presente || convidado.present);
+
+        const bateBusca = nome.includes(termo);
+        const bateFiltro =
+          filtroAtual === "todos" ||
+          (filtroAtual === "confirmados" && confirmado) ||
+          (filtroAtual === "presentes" && presente) ||
+          (filtroAtual === "pendentes" && !confirmado);
+
+        return bateBusca && bateFiltro;
+      });
+
+      document.getElementById("totalCount").textContent = convidados.length;
+      document.getElementById("confirmedCount").textContent = convidados.filter(c => c.confirmado || c.confirmed).length;
+      document.getElementById("presentCount").textContent = convidados.filter(c => c.presente || c.present).length;
+
+      if (filtrados.length === 0) {
+        guestList.innerHTML = `<div class="empty">Nenhum convidado encontrado.</div>`;
+        return;
+      }
+
+      guestList.innerHTML = filtrados
+        .sort((a, b) => (a.nome || a.name || "").localeCompare(b.nome || b.name || ""))
+        .map((convidado) => {
+          const nome = convidado.nome || convidado.name || "Convidado sem nome";
+          const confirmado = Boolean(convidado.confirmado || convidado.confirmed);
+          const presente = Boolean(convidado.presente || convidado.present);
+          const horario = formatarHorario(convidado.horarioPresenca || convidado.presentAt);
+
+          return `
+            <article class="guest-card">
+              <div>
+                <div class="guest-name">${escapeHtml(nome)}</div>
+                <div class="guest-status">${confirmado ? "Confirmado" : "Pendente de confirmação"}</div>
+                ${presente ? `<div class="guest-time">Entrada registrada ${horario}</div>` : ""}
+              </div>
+              <button class="present-btn ${presente ? "off" : ""}" onclick="marcarPresenca('${convidado.id}', ${presente})">
+                ${presente ? "PRESENTE ✓" : "MARCAR"}
+              </button>
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    window.marcarPresenca = async function(id, jaPresente) {
+      const convidadoDoc = doc(db, "convidados", id);
+      await updateDoc(convidadoDoc, {
+        presente: !jaPresente,
+        horarioPresenca: !jaPresente ? serverTimestamp() : null
+      });
+    };
+
+    function formatarHorario(timestamp) {
+      if (!timestamp) return "";
+      const data = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+      return `às ${data.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
+    }
+
+    function escapeHtml(texto) {
+      return String(texto)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
