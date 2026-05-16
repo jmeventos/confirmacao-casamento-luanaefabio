@@ -6,8 +6,49 @@
 
 <title>Confirmação de Presença</title>
 
-<style>
+</style>
+  
+.folhagem-topo{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:260px;
+    background-image:url('folhagem.webp');
+    background-size:cover;
+    background-position:center top;
+    background-repeat:no-repeat;
+    z-index:0;
 
+    animation: vento 6s ease-in-out infinite;
+}
+
+@keyframes vento{
+    0%{
+        transform:translateY(0px) rotate(0deg);
+    }
+
+    25%{
+        transform:translateY(3px) rotate(0.5deg);
+    }
+
+    50%{
+        transform:translateY(0px) rotate(0deg);
+    }
+
+    75%{
+        transform:translateY(-3px) rotate(-0.5deg);
+    }
+
+    100%{
+        transform:translateY(0px) rotate(0deg);
+    }
+}
+
+.container{
+    position:relative;
+    z-index:2;
+}
 *{
 margin:0;
 padding:0;
@@ -15,14 +56,15 @@ box-sizing:border-box;
 }
 
 body{
-font-family: 'Georgia', serif;
-background:#f8f5ef;
-overflow:hidden;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-position:relative;
+    font-family: 'Georgia', serif;
+    background: #ffffff;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    overflow:hidden;
+    position:relative;
 }
 
 /* FUNDO */
@@ -216,7 +258,8 @@ padding:40px 25px;
 </head>
 
 <body>
-
+  
+<div class="folhagem-topo"></div>
 <div class="top-folhas"></div>
 <div class="bottom-folhas"></div>
 
