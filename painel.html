@@ -271,9 +271,13 @@
 
     onSnapshot(convidadosRef, (snapshot) => {
       convidados = snapshot.docs.map((documento) => ({
-        id: documento.id,
-        ...documento.data()
-      }));
+  id: documento.id,
+  nome: documento.data().nome,
+  status: documento.data().status,
+  dataHora: documento.data().dataHora,
+  presente: documento.data().presente || false,
+  horarioPresenca: documento.data().horarioPresenca || null
+}));
       render();
     });
 
@@ -292,9 +296,9 @@
       const termo = searchInput.value.toLowerCase().trim();
 
       const filtrados = convidados.filter((convidado) => {
-        const nome = (convidado.nome || convidado.name || "").toLowerCase();
+        const nome = (convidado.nome || "").toLowerCase();
         const confirmado = Boolean(convidado.confirmado || convidado.confirmed);
-        const presente = Boolean(convidado.presente || convidado.present);
+        const presente = Boolean(convidado.presente);
 
         const bateBusca = nome.includes(termo);
         const bateFiltro =
@@ -319,7 +323,7 @@
       guestList.innerHTML = filtrados
         .sort((a, b) => (a.nome || a.name || "").localeCompare(b.nome || b.name || ""))
         .map((convidado) => {
-          const nome = convidado.nome || convidado.name || "Convidado sem nome";
+          const nome = convidado.nome || "Convidado sem nome";
           const confirmado = convidado.status === "confirmado";
           const presente = Boolean(convidado.presente || convidado.present);
           const horario = formatarHorario(convidado.horarioPresenca || convidado.presentAt);
