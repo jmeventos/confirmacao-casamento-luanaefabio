@@ -260,7 +260,7 @@
     const db = getFirestore(app);
 
     // ALTERE AQUI SOMENTE SE SUA COLEÇÃO TIVER OUTRO NOME
-    const convidadosRef = collection(db, "convidados");
+    const convidadosRef = collection(db, "confirmacoes");
 
     let convidados = [];
     let filtroAtual = "todos";
@@ -341,7 +341,7 @@
     }
 
     window.marcarPresenca = async function(id, jaPresente) {
-      const convidadoDoc = doc(db, "convidados", id);
+     const convidadoDoc = doc(db, "confirmacoes", id);
       await updateDoc(convidadoDoc, {
         presente: !jaPresente,
         horarioPresenca: !jaPresente ? serverTimestamp() : null
