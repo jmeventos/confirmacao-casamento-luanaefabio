@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Luana & Fábio | Convite</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family: 'Georgia', serif;
+background:#f7f5ef;
+overflow-x:hidden;
+color:#3d3d3d;
+}
+
+/* FUNDO */
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.85)),
+url('folhagem.webp');
+background-size:cover;
+background-position:center;
+z-index:-2;
+}
+
+/* EFEITO DOURADO */
+
+.gold-line{
+position:fixed;
+right:18px;
+top:0;
+width:2px;
+height:100%;
+background:linear-gradient(
+to bottom,
+transparent,
+#d4b05f,
+#f6e2a5,
+#d4b05f,
+transparent
+);
+z-index:-1;
+opacity:0.8;
+}
+
+/* ABERTURA */
+
+.abertura{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+transition:1s;
+}
+
+.card-abertura{
+background:rgba(255,255,255,0.85);
+backdrop-filter:blur(8px);
+padding:50px 30px;
+border-radius:30px;
+text-align:center;
+max-width:500px;
+width:100%;
+box-shadow:0 10px 40px rgba(0,0,0,0.15);
+animation:fade 1.5s ease;
+border:1px solid rgba(212,176,95,0.4);
+}
+
+.mini{
+letter-spacing:4px;
+font-size:12px;
+text-transform:uppercase;
+color:#6f775d;
+margin-bottom:15px;
+font-family:Arial;
+}
+
+h1{
+font-size:58px;
+font-weight:normal;
+line-height:1;
+color:#31412d;
+margin-bottom:20px;
+}
+
+.frase{
+font-size:18px;
+line-height:1.7;
+margin-bottom:30px;
+}
+
+/* BOTÕES */
+
+.btn{
+display:inline-block;
+padding:16px 28px;
+border-radius:999px;
+background:linear-gradient(135deg,#d4b05f,#f4e2ad,#d4b05f);
+color:#2f2815;
+font-family:Arial;
+font-weight:bold;
+font-size:14px;
+letter-spacing:1px;
+text-transform:uppercase;
+text-decoration:none;
+border:none;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 8px 20px rgba(212,176,95,0.35);
+}
+
+.btn:hover{
+transform:translateY(-2px);
+}
+
+/* CONVITE */
+
+.convite{
+display:none;
+padding:60px 20px;
+animation:fade 1.2s ease;
+}
+
+.card{
+max-width:620px;
+margin:auto;
+background:rgba(255,255,255,0.88);
+backdrop-filter:blur(8px);
+padding:30px;
+border-radius:35px;
+box-shadow:0 10px 40px rgba(0,0,0,0.12);
+border:1px solid rgba(212,176,95,0.4);
+text-align:center;
+}
+
+/* FOTO */
+
+/* TROQUE A FOTO AQUI */
+.foto{
+width:280px;
+height:280px;
+border-radius:50%;
+margin:auto;
+overflow:hidden;
+border:6px solid #e8d3a0;
+margin-bottom:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.foto img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* DATA */
+
+.data{
+margin:20px auto;
+padding:12px 22px;
+display:inline-block;
+border-top:1px solid #d4b05f;
+border-bottom:1px solid #d4b05f;
+font-family:Arial;
+letter-spacing:2px;
+font-size:13px;
+text-transform:uppercase;
+color:#31412d;
+}
+
+/* TEXTO */
+
+.texto{
+font-size:18px;
+line-height:1.8;
+margin:25px 0;
+}
+
+/* MÚSICA */
+
+.music{
+margin:20px 0;
+}
+
+/* BOTÕES LINKS */
+
+.links{
+display:grid;
+gap:14px;
+margin-top:30px;
+}
+
+/* RODAPÉ */
+
+.final{
+margin-top:25px;
+font-size:16px;
+line-height:1.6;
+color:#555;
+}
+
+footer{
+margin-top:20px;
+font-size:11px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-family:Arial;
+color:#777;
+}
+
+/* ANIMAÇÕES */
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* RESPONSIVO */
+
+@media(max-width:600px){
+
+h1{
+font-size:42px;
+}
+
+.foto{
+width:220px;
+height:220px;
+}
+
+.card{
+padding:25px 18px;
+}
+
+.texto{
+font-size:16px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="gold-line"></div>
+
+<!-- ABERTURA -->
+
+<section class="abertura" id="abertura">
+
+<div class="card-abertura">
+
+<div class="mini">
+Convite de Casamento
+</div>
+
+<!-- TROQUE O NOME AQUI -->
+<h1>
+Luana<br>& Fábio
+</h1>
+
+<p class="frase">
+Temos um convite especial para você
+</p>
+
+<button class="btn" onclick="abrirConvite()">
+Abrir Convite
+</button>
+
+</div>
+
+</section>
+
+<!-- CONVITE -->
+
+<section class="convite" id="convite">
+
+<div class="card">
+
+<div class="foto">
+
+<!-- TROQUE A FOTO AQUI -->
+<img src="foto-noivos.jpg">
+
+</div>
+
+<div class="mini">
+Com amor, convidamos você
+</div>
+
+<!-- TROQUE O NOME AQUI -->
+<h1>
+Luana<br>& Fábio
+</h1>
+
+<!-- TROQUE DATA E HORÁRIO -->
+<div class="data">
+08 de Agosto de 2026 • 16:30
+</div>
+
+<p class="texto">
+Com alegria em nossos corações,
+convidamos você para celebrar conosco
+este momento tão especial.
+</p>
+
+<!-- MÚSICA -->
+
+<div class="music">
+
+<!-- TROQUE O MP3 AQUI -->
+<audio id="musica" src="musica.mp3"></audio>
+
+<button class="btn" onclick="toggleMusica()" id="musicBtn">
+Tocar Música
+</button>
+
+</div>
+
+<!-- BOTÕES -->
+
+<div class="links">
+
+<!-- RSVP -->
+<a class="btn"
+href="COLOQUE_AQUI_LINK_RSVP"
+target="_blank">
+
+Confirmar Presença
+
+</a>
+
+<!-- MAPS -->
+<a class="btn"
+href="COLOQUE_AQUI_LINK_MAPS"
+target="_blank">
+
+Ver Local da Cerimônia
+
+</a>
+
+<!-- CRONÔMETRO -->
+<a class="btn"
+href="https://www.timeanddate.com/countdown/wedding?iso=20260808T1630&p0=45&msg=Casamento+Luana+e+Fabio&font=cursive"
+target="_blank">
+
+Quantos dias faltam
+
+</a>
+
+</div>
+
+<p class="final">
+A sua presença tornará esse dia ainda mais especial.
+</p>
+
+<footer>
+Convite Digital • Luana & Fábio
+</footer>
+
+</div>
+
+</section>
+
+<script>
+
+function abrirConvite(){
+
+document.getElementById("abertura").style.display="none";
+
+document.getElementById("convite").style.display="block";
+
+}
+
+/* MÚSICA */
+
+const musica =
+document.getElementById("musica");
+
+const musicBtn =
+document.getElementById("musicBtn");
+
+function toggleMusica(){
+
+if(musica.paused){
+
+musica.play();
+
+musicBtn.innerHTML =
+"Pausar Música";
+
+}else{
+
+musica.pause();
+
+musicBtn.innerHTML =
+"Tocar Música";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
