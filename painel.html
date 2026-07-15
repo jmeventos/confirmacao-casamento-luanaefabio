@@ -6,6 +6,42 @@
   <title>Painel de Presença | Luana & Fábio</title>
 
   <style>
+  .report-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+  margin-bottom: 16px;
+}
+
+.report-btn {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 13px 16px;
+  background: #31563a;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.report-btn:hover {
+  background: #24432c;
+}
+
+.whatsapp-btn {
+  background: #218b4e;
+}
+
+.whatsapp-btn:hover {
+  background: #176c3a;
+}
+
+@media (min-width: 600px) {
+  .report-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+} 
     * {
       box-sizing: border-box;
       margin: 0;
@@ -224,7 +260,19 @@
       <button class="tab" data-filter="presentes">Presentes</button>
       <button class="tab" data-filter="pendentes">Pendentes</button>
     </div>
+<div class="report-actions">
+  <button id="exportPdfBtn" class="report-btn">
+    📄 Exportar em PDF
+  </button>
 
+  <button id="printListBtn" class="report-btn">
+    🖨️ Imprimir lista
+  </button>
+
+  <button id="shareWhatsappBtn" class="report-btn whatsapp-btn">
+    📱 Compartilhar no WhatsApp
+  </button>
+</div>
     <div class="stats">
       <div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
       <div class="stat"><strong id="confirmedCount">0</strong><span>Confirmados</span></div>
