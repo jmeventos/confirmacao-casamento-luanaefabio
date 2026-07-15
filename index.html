@@ -499,5 +499,50 @@ window.verificarConvite = async function(){
 }
 
 </script>
-</body>
+    <script>
+const dataEncerramento = new Date("2026-07-15T23:59:59-03:00");
+
+if (new Date() >= dataEncerramento) {
+
+document.body.innerHTML = `
+<div style="
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:url('folhagem.webp') center center/cover no-repeat;
+padding:25px;
+font-family:Arial,sans-serif;
+">
+
+<div style="
+max-width:520px;
+background:rgba(255,255,255,.95);
+padding:40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+">
+
+<h1 style="color:#486a55;">💍 Confirmações Encerradas</h1>
+
+<p style="font-size:18px;color:#555;">
+O prazo para confirmação de presença foi encerrado.
+</p>
+
+<p style="font-size:17px;color:#555;">
+A data limite era
+<b>15/07/2026 às 23:59.</b>
+</p>
+
+<p style="margin-top:25px;color:#486a55;">
+Agradecemos sua compreensão e esperamos você em nosso grande dia!
+</p>
+
+</div>
+</div>
+`;
+}
+</script>
+</body> 
 </html>
