@@ -403,6 +403,43 @@
 
     <p class="footer-note">Luana & Fábio • RSVP digital</p>
   </main>
+
+
+  <div id="reportModal" class="report-modal" aria-hidden="true">
+    <div class="report-modal-content" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+      <button id="closeReportModal" class="close-report-modal" aria-label="Fechar">×</button>
+
+      <h2 id="reportTitle">Relatório do Evento</h2>
+      <p class="modal-description">Escolha a lista que deseja gerar em PDF:</p>
+
+      <div class="report-summary">
+        <div class="summary-card">
+          <strong id="modalConfirmedCount">0</strong>
+          <span>Confirmados</span>
+        </div>
+        <div class="summary-card">
+          <strong id="modalPresentCount">0</strong>
+          <span>Presentes</span>
+        </div>
+        <div class="summary-card">
+          <strong id="modalAbsentCount">0</strong>
+          <span>Ausentes</span>
+        </div>
+        <div class="summary-card">
+          <strong id="modalAttendanceRate">0%</strong>
+          <span>Comparecimento</span>
+        </div>
+      </div>
+
+      <div class="report-options">
+        <button class="report-option-btn" data-report-type="confirmados">✅ Confirmados</button>
+        <button class="report-option-btn" data-report-type="presentes">🟢 Presentes</button>
+        <button class="report-option-btn" data-report-type="ausentes">🔴 Ausentes</button>
+        <button class="report-option-btn" data-report-type="todos">👥 Relatório completo</button>
+      </div>
+    </div>
+  </div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
@@ -413,6 +450,13 @@
       updateDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    const EVENT_NAME = "Casamento de Luana & Fábio";
+    const EVENT_DATE = "08/08/2026";
+    const REPORT_CODE = "JM-2026-0826";
+    const COMPANY_NAME = "SISTEMAS JM";
+    const COMPANY_PHONE = "(28) 99979-1426";
 
     // COLE AQUI A MESMA CONFIGURAÇÃO FIREBASE DA SUA PÁGINA RSVP
    const firebaseConfig = {
@@ -751,4 +795,3 @@ Contato: ${COMPANY_PHONE}`;
   </script>
 </body>
 </html>
-
