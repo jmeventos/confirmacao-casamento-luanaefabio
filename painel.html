@@ -393,68 +393,7 @@
     📱 Compartilhar no WhatsApp
   </button>
 </div>
-    <div id="reportModal" class="report-modal">
-
-  <div class="report-modal-content">
-
-    <button id="closeReportModal" class="close-report-modal">
-      ×
-    </button>
-
-    <h2>Relatório do Evento</h2>
-
-    <p class="modal-description">
-      Escolha a lista que deseja gerar em PDF:
-    </p>
-
-    <div class="report-summary">
-
-      <div class="summary-card">
-        <strong id="modalConfirmedCount">0</strong>
-        <span>Confirmados</span>
-      </div>
-
-      <div class="summary-card">
-        <strong id="modalPresentCount">0</strong>
-        <span>Presentes</span>
-      </div>
-
-      <div class="summary-card">
-        <strong id="modalAbsentCount">0</strong>
-        <span>Ausentes</span>
-      </div>
-
-      <div class="summary-card">
-        <strong id="modalAttendanceRate">0%</strong>
-        <span>Comparecimento</span>
-      </div>
-
-    </div>
-
-    <div class="report-options">
-
-      <button class="report-option-btn" data-report-type="confirmados">
-        ✅ Confirmados
-      </button>
-
-      <button class="report-option-btn" data-report-type="presentes">
-        🟢 Presentes
-      </button>
-
-      <button class="report-option-btn" data-report-type="ausentes">
-        🔴 Ausentes
-      </button>
-
-      <button class="report-option-btn" data-report-type="todos">
-        👥 Relatório completo
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-    <div class="stats">
+<div class="stats">
       <div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
       <div class="stat"><strong id="confirmedCount">0</strong><span>Confirmados</span></div>
       <div class="stat"><strong id="presentCount">0</strong><span>Presentes</span></div>
@@ -464,20 +403,7 @@
 
     <p class="footer-note">Luana & Fábio • RSVP digital</p>
   </main>
-  
-  <div id="reportModal" class="report-modal">
-
-   <div class="report-modal-content">
-
-        ...
-        TODO O CONTEÚDO
-        ...
-
-    </div>
-
-</div>
-
-  <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
       getFirestore,
@@ -515,47 +441,51 @@ const shareWhatsappBtn = document.getElementById("shareWhatsappBtn");
     const reportModal = document.getElementById("reportModal");
 const closeReportModal = document.getElementById("closeReportModal");
 
-reportBtn.addEventListener("click", () => {
-  const confirmados = convidados.filter(
-    convidado => convidado.status === "confirmado"
-  );
+const reportOptionButtons = document.querySelectorAll(".report-option-btn");
 
-  const presentes = confirmados.filter(
-    convidado => convidado.presente === true
-  );
+function obterResumo() {
+  const confirmados = convidados.filter(c => c.status === "confirmado");
+  const presentes = confirmados.filter(c => c.presente === true);
+  const ausentes = confirmados.filter(c => c.presente !== true);
+  const taxa = confirmados.length
+    ? Math.round((presentes.length / confirmados.length) * 100)
+    : 0;
+  return { confirmados, presentes, ausentes, taxa };
+}
 
-  const ausentes = confirmados.filter(
-    convidado => convidado.presente !== true
-  );
+function abrirModalRelatorio() {
+  const { confirmados, presentes, ausentes, taxa } = obterResumo();
 
-  const taxaComparecimento =
-    confirmados.length > 0
-      ? Math.round((presentes.length / confirmados.length) * 100)
-      : 0;
-
-  document.getElementById("modalConfirmedCount").textContent =
-    confirmados.length;
-
-  document.getElementById("modalPresentCount").textContent =
-    presentes.length;
-
-  document.getElementById("modalAbsentCount").textContent =
-    ausentes.length;
-
-  document.getElementById("modalAttendanceRate").textContent =
-    `${taxaComparecimento}%`;
+  document.getElementById("modalConfirmedCount").textContent = confirmados.length;
+  document.getElementById("modalPresentCount").textContent = presentes.length;
+  document.getElementById("modalAbsentCount").textContent = ausentes.length;
+  document.getElementById("modalAttendanceRate").textContent = `${taxa}%`;
 
   reportModal.classList.add("open");
-});
-closeReportModal.addEventListener("click", () => {
-    reportModal.classList.remove("open");
+  reportModal.setAttribute("aria-hidden", "false");
+}
+
+function fecharModalRelatorio() {
+  reportModal.classList.remove("open");
+  reportModal.setAttribute("aria-hidden", "true");
+}
+
+reportBtn.addEventListener("click", abrirModalRelatorio);
+closeReportModal.addEventListener("click", fecharModalRelatorio);
+
+reportModal.addEventListener("click", (event) => {
+  if (event.target === reportModal) fecharModalRelatorio();
 });
 
-reportModal.addEventListener("click", (e) => {
-    if (e.target === reportModal) {
-        reportModal.classList.remove("open");
-    }
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") fecharModalRelatorio();
 });
+
+reportOptionButtons.forEach(button => {
+  button.addEventListener("click", () => gerarRelatorio(button.dataset.reportType));
+});
+
+shareWhatsappBtn.addEventListener("click", compartilharResumoWhatsApp);
 
     onSnapshot(convidadosRef, (snapshot) => {
       convidados = snapshot.docs.map((documento) => ({
@@ -646,6 +576,170 @@ reportModal.addEventListener("click", (e) => {
       return `às ${data.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     }
 
+
+    function dataPresencaParaOrdenacao(convidado) {
+      const timestamp = convidado.horarioPresenca;
+      if (!timestamp) return Number.MAX_SAFE_INTEGER;
+      const data = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+      return data.getTime();
+    }
+
+    function obterListaRelatorio(tipo) {
+      const { confirmados, presentes, ausentes } = obterResumo();
+
+      if (tipo === "confirmados") {
+        return {
+          titulo: "Lista de Confirmados",
+          itens: confirmados.slice().sort((a,b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"))
+        };
+      }
+
+      if (tipo === "presentes") {
+        return {
+          titulo: "Lista de Presentes — Ordem de Chegada",
+          itens: presentes.slice().sort((a,b) =>
+            dataPresencaParaOrdenacao(a) - dataPresencaParaOrdenacao(b)
+          )
+        };
+      }
+
+      if (tipo === "ausentes") {
+        return {
+          titulo: "Lista de Ausentes",
+          itens: ausentes.slice().sort((a,b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"))
+        };
+      }
+
+      return {
+        titulo: "Relatório Completo de Convidados",
+        itens: convidados.slice().sort((a,b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"))
+      };
+    }
+
+    function gerarRelatorio(tipo) {
+      const { confirmados, presentes, ausentes, taxa } = obterResumo();
+      const { titulo, itens } = obterListaRelatorio(tipo);
+      const emissao = new Date().toLocaleString("pt-BR");
+
+      const linhas = itens.map((convidado, indice) => {
+        const horario = convidado.presente ? formatarHorario(convidado.horarioPresenca) : "—";
+        return `
+          <tr>
+            <td>${indice + 1}</td>
+            <td>${escapeHtml(convidado.nome || "Convidado sem nome")}</td>
+            <td>${convidado.status === "confirmado" ? "Confirmado" : "Pendente"}</td>
+            <td>${convidado.presente ? "Presente" : "Ausente"}</td>
+            <td>${horario}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const janela = window.open("", "_blank", "width=1000,height=800");
+      if (!janela) {
+        alert("Permita pop-ups no navegador e tente novamente.");
+        return;
+      }
+
+      janela.document.write(`
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+          <meta charset="UTF-8">
+          <title>${REPORT_CODE} — ${titulo}</title>
+          <style>
+            *{box-sizing:border-box}
+            body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;padding:28px}
+            .header{border-bottom:3px solid #31563a;padding-bottom:16px;margin-bottom:18px}
+            .brand{font-size:25px;font-weight:800;color:#31563a}
+            .system{font-size:13px;color:#666;margin-top:3px}
+            h1{font-size:22px;margin:18px 0 6px}
+            .meta{font-size:13px;line-height:1.6;color:#444}
+            .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+            .card{border:1px solid #d8e4da;background:#f3f7f4;border-radius:10px;padding:12px;text-align:center}
+            .card strong{display:block;font-size:21px;color:#31563a}
+            .card span{font-size:11px;color:#666}
+            table{width:100%;border-collapse:collapse;font-size:12px}
+            th,td{border:1px solid #ddd;padding:8px;text-align:left}
+            th{background:#31563a;color:#fff}
+            tr:nth-child(even){background:#f7f7f7}
+            .footer{margin-top:24px;padding-top:12px;border-top:1px solid #ccc;text-align:center;font-size:11px;color:#666}
+            @media print{
+              body{padding:12mm}
+              thead{display:table-header-group}
+              tr{page-break-inside:avoid}
+            }
+          </style>
+        </head>
+        <body>
+          <section class="header">
+            <div class="brand">${COMPANY_NAME}</div>
+            <div class="system">Sistema inteligente de controle de presença</div>
+            <h1>${titulo}</h1>
+            <div class="meta">
+              <strong>Evento:</strong> ${EVENT_NAME}<br>
+              <strong>Data do evento:</strong> ${EVENT_DATE}<br>
+              <strong>Relatório nº:</strong> ${REPORT_CODE}<br>
+              <strong>Emissão:</strong> ${emissao}
+            </div>
+          </section>
+
+          <section class="summary">
+            <div class="card"><strong>${convidados.length}</strong><span>Total</span></div>
+            <div class="card"><strong>${confirmados.length}</strong><span>Confirmados</span></div>
+            <div class="card"><strong>${presentes.length}</strong><span>Presentes</span></div>
+            <div class="card"><strong>${ausentes.length}</strong><span>Ausentes — ${taxa}% comparecimento</span></div>
+          </section>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Nome</th>
+                <th>Confirmação</th>
+                <th>Presença</th>
+                <th>Horário</th>
+              </tr>
+            </thead>
+            <tbody>${linhas}</tbody>
+          </table>
+
+          <div class="footer">
+            ${COMPANY_NAME} • Relatório ${REPORT_CODE}<br>
+            WhatsApp: ${COMPANY_PHONE} • © 2026 Todos os direitos reservados.
+          </div>
+
+          <script>
+            window.onload = () => setTimeout(() => window.print(), 400);
+          <\/script>
+        </body>
+        </html>
+      `);
+
+      janela.document.close();
+      fecharModalRelatorio();
+    }
+
+    function compartilharResumoWhatsApp() {
+      const { confirmados, presentes, ausentes, taxa } = obterResumo();
+
+      const mensagem =
+`📊 *RELATÓRIO DE PRESENÇA*
+*${EVENT_NAME}*
+Data: ${EVENT_DATE}
+
+Total cadastrado: ${convidados.length}
+Confirmados: ${confirmados.length}
+Presentes: ${presentes.length}
+Ausentes: ${ausentes.length}
+Comparecimento: ${taxa}%
+
+Relatório: ${REPORT_CODE}
+Gerado por ${COMPANY_NAME}
+Contato: ${COMPANY_PHONE}`;
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, "_blank");
+    }
+
     function escapeHtml(texto) {
       return String(texto)
         .replaceAll("&", "&amp;")
@@ -657,3 +751,4 @@ reportModal.addEventListener("click", (e) => {
   </script>
 </body>
 </html>
+
